@@ -1,15 +1,19 @@
 import 'package:ar_hardware/preferences/theme_preferences.dart';
+import 'package:ar_hardware/repository/auth_repository.dart';
 import 'package:ar_hardware/routes/approutes.dart';
 import 'package:ar_hardware/views/auth/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
+
 Future<void> main() async {
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // ).then((value) => Get.put(AuthRepository()));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ).then((value) => Get.put(AuthRepository()));
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
