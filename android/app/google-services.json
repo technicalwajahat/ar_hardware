@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "597823545663",
+    "project_id": "ar-hardware-7e8fe",
+    "storage_bucket": "ar-hardware-7e8fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597823545663:android:750fa1da3ce09a2d56b38a",
+        "android_client_info": {
+          "package_name": "com.technicalwajahat.ar_hardware"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdM0hWld4hTvoPRJURzvGSN-Wed7smHzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
