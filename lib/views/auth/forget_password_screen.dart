@@ -50,7 +50,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
     // Forget Password
     final forgetButton = FilledButton(
-      style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
       onPressed: () {
         FocusManager.instance.primaryFocus?.unfocus();
         if (_formKey.currentState!.validate()) {

@@ -242,12 +242,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     // Register Button
     final registerButton = FilledButton(
-      style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
       onPressed: () {
         FocusManager.instance.primaryFocus?.unfocus();
         if (_formKey.currentState!.validate()) {
           final user = UserModel(
-            id: '',
+            id: 'Empty ID',
             email: authViewModel.registerEmail.text.trim(),
             username: authViewModel.username.text.trim(),
             name: authViewModel.fullName.text.trim(),

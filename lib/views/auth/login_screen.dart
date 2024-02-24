@@ -93,6 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = FilledButton(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
       ),
       onPressed: () {
         FocusManager.instance.primaryFocus?.unfocus();
