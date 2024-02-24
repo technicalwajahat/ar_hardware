@@ -139,79 +139,83 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     // Password Field
-    final passwordField = TextFormField(
-      autofocus: false,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      controller: authViewModel.registerPassword,
-      obscureText: authViewModel.isObscure.value,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(25),
-      ],
-      validator: (value) {
-        RegExp regex = RegExp(r'^.{8,}$');
-        if (value!.isEmpty) {
-          return ("Password is required for login");
-        }
-        if (!regex.hasMatch(value)) {
-          return ("Enter Valid Password (Min. 8 Character)");
-        }
-        return null;
-      },
-      onSaved: (value) {
-        authViewModel.registerPassword.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-          icon: Icon(authViewModel.isObscure.value
-              ? Icons.visibility_off
-              : Icons.visibility),
-          onPressed: authViewModel.checkObscurePassword,
+    final passwordField = Obx(() {
+      return TextFormField(
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        controller: authViewModel.registerPassword,
+        obscureText: authViewModel.isObscure.value,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(25),
+        ],
+        validator: (value) {
+          RegExp regex = RegExp(r'^.{8,}$');
+          if (value!.isEmpty) {
+            return ("Password is required for login");
+          }
+          if (!regex.hasMatch(value)) {
+            return ("Enter Valid Password (Min. 8 Character)");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          authViewModel.registerPassword.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(
+            icon: Icon(authViewModel.isObscure.value
+                ? Icons.visibility_off
+                : Icons.visibility),
+            onPressed: authViewModel.checkObscurePassword,
+          ),
+          prefixIcon: const Icon(Icons.key),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Password",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        prefixIcon: const Icon(Icons.key),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Password",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
+      );
+    });
 
     // Confirm Password Field
-    final confirmPasswordField = TextFormField(
-      autofocus: false,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(25),
-      ],
-      validator: (value) {
-        if (authViewModel.confirmPassword.text !=
-            authViewModel.registerPassword.text) {
-          return "Password don't match";
-        }
-        return null;
-      },
-      controller: authViewModel.confirmPassword,
-      obscureText: authViewModel.isObscure2.value,
-      onSaved: (value) {
-        authViewModel.confirmPassword.text = value!;
-      },
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-          icon: Icon(authViewModel.isObscure2.value
-              ? Icons.visibility_off
-              : Icons.visibility),
-          onPressed: authViewModel.checkObscureConfirmPassword,
+    final confirmPasswordField = Obx(() {
+      return TextFormField(
+        autofocus: false,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(25),
+        ],
+        validator: (value) {
+          if (authViewModel.confirmPassword.text !=
+              authViewModel.registerPassword.text) {
+            return "Password don't match";
+          }
+          return null;
+        },
+        controller: authViewModel.confirmPassword,
+        obscureText: authViewModel.isObscure2.value,
+        onSaved: (value) {
+          authViewModel.confirmPassword.text = value!;
+        },
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(
+            icon: Icon(authViewModel.isObscure2.value
+                ? Icons.visibility_off
+                : Icons.visibility),
+            onPressed: authViewModel.checkObscureConfirmPassword,
+          ),
+          prefixIcon: const Icon(Icons.key),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Confirm Password",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        prefixIcon: const Icon(Icons.key),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Confirm Password",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
+      );
+    });
 
     // Role Field
     final roleField = DropdownButtonFormField<String>(
@@ -243,6 +247,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         FocusManager.instance.primaryFocus?.unfocus();
         if (_formKey.currentState!.validate()) {
           final user = UserModel(
+            id: '',
             email: authViewModel.registerEmail.text.trim(),
             username: authViewModel.username.text.trim(),
             name: authViewModel.fullName.text.trim(),
@@ -256,7 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: const AutoSizeText(
         "Register",
         textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
       ),
     );
 
@@ -276,8 +281,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const AutoSizeText(
                       "Lets Get Started!",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 30,
                       ),
                     ),
                     SizedBox(height: Get.height * 0.001),
@@ -304,14 +309,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     confirmPasswordField,
                     SizedBox(height: Get.height * 0.03),
                     registerButton,
-                    SizedBox(height: Get.height * 0.03),
+                    SizedBox(height: Get.height * 0.018),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         const AutoSizeText(
                           "Already have an account? ",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -322,8 +327,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: const AutoSizeText(
                             "Sign In",
                             style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),

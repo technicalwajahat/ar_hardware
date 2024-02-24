@@ -21,7 +21,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: AutoSizeText(
         text,
-        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
       ),
     );
   }

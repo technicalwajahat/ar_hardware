@@ -68,6 +68,7 @@ class AuthRepository extends GetxController {
     await _auth.signOut();
   }
 
+  // Navigate to Dashboard
   navigateToDashboard(String uid) {
     _userRepo.navigationDashboard(uid);
   }

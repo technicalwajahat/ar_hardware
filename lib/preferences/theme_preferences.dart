@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 ThemeData light = ThemeData(
-  fontFamily: 'Nunito',
+  fontFamily: 'Poppins',
   useMaterial3: true,
   brightness: Brightness.light,
   colorSchemeSeed: Colors.orange,
@@ -16,7 +16,7 @@ ThemeData light = ThemeData(
 );
 
 ThemeData dark = ThemeData(
-  fontFamily: 'Nunito',
+  fontFamily: 'Poppins',
   useMaterial3: true,
   colorSchemeSeed: Colors.orange,
   brightness: Brightness.dark,

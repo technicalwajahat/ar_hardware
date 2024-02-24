@@ -40,6 +40,7 @@ class AuthViewModel extends GetxController {
     _authRepo
         .createUserWithEmailAndPassword(user.email!, user.password!, context)
         .then((_) {
+      user.id = _authRepo.firebaseUser.value!.uid;
       _userRepo.createUser(user, context);
       Utils.snackBar("Success, Your account has been created.", context);
       clearFields();

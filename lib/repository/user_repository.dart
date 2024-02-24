@@ -25,13 +25,13 @@ class UserRepository extends GetxController {
 
   // Dashboard Navigation
   void navigationDashboard(String uid) async {
-    await _db.collection("users").doc(uid).get().then((value) {
-      final role = value.data()?['role'].toString();
-      if (role == 'User') {
-        Get.offAllNamed('/userDashboard');
-      } else {
-        Get.offAllNamed('/vendorDashboard');
-      }
-    });
+    final snapshot =
+        await _db.collection("users").where('id', isEqualTo: uid).get();
+    final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
+    if (userData.role == 'User') {
+      Get.offAllNamed('/userDashboard');
+    } else {
+      Get.offAllNamed('/vendorDashboard');
+    }
   }
 }

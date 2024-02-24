@@ -49,43 +49,45 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     // Password Field
-    final passwordField = TextFormField(
-      autofocus: false,
-      obscureText: authViewModel.isObscure.value,
-      controller: authViewModel.loginPassword,
-      onSaved: (value) {
-        authViewModel.loginPassword.text = value!.trim();
-      },
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(25),
-      ],
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        RegExp regex = RegExp(r'^.{8,}$');
-        if (value!.isEmpty) {
-          return ("Password is required for login");
-        }
-        if (!regex.hasMatch(value)) {
-          return ("Enter Valid Password (Min. 8 Character)");
-        }
-        return null;
-      },
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-          icon: Icon(authViewModel.isObscure.value
-              ? Icons.visibility_off
-              : Icons.visibility),
-          onPressed: authViewModel.checkObscurePassword,
+    final passwordField = Obx(() {
+      return TextFormField(
+        autofocus: false,
+        obscureText: authViewModel.isObscure.value,
+        controller: authViewModel.loginPassword,
+        onSaved: (value) {
+          authViewModel.loginPassword.text = value!.trim();
+        },
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(25),
+        ],
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) {
+          RegExp regex = RegExp(r'^.{8,}$');
+          if (value!.isEmpty) {
+            return ("Password is required for login");
+          }
+          if (!regex.hasMatch(value)) {
+            return ("Enter Valid Password (Min. 8 Character)");
+          }
+          return null;
+        },
+        textInputAction: TextInputAction.done,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(
+            icon: Icon(authViewModel.isObscure.value
+                ? Icons.visibility_off
+                : Icons.visibility),
+            onPressed: authViewModel.checkObscurePassword,
+          ),
+          prefixIcon: const Icon(Icons.key),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Password",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        prefixIcon: const Icon(Icons.key),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Password",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
+      );
+    });
 
     // Login Button
     final loginButton = FilledButton(
@@ -103,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
         "Login",
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
         ),
       ),
     );
@@ -124,8 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     const AutoSizeText(
                       "Welcome Back!",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 30,
                       ),
                     ),
                     SizedBox(height: Get.height * 0.01),
@@ -151,8 +153,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const AutoSizeText(
                             "Forget Password?",
                             style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -161,14 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: Get.height * 0.03),
                     loginButton,
                     SizedBox(height: Get.height * 0.018),
-                    const AutoSizeText(
-                      "OR",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(height: Get.height * 0.03),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -176,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const AutoSizeText(
                           "Don't have an Account? ",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -187,8 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const AutoSizeText(
                             "Sign Up",
                             style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
