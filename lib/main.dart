@@ -1,7 +1,7 @@
 import 'package:ar_hardware/preferences/theme_preferences.dart';
 import 'package:ar_hardware/repository/auth_repository.dart';
 import 'package:ar_hardware/routes/approutes.dart';
-import 'package:ar_hardware/views/auth/login_screen.dart';
+import 'package:ar_hardware/widgets/loading_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             theme: notifier.darkTheme ? dark : light,
             darkTheme: notifier.darkTheme ? dark : light,
             getPages: appRoutes(),
-            home: const LoginScreen(),
+            home: const LoadingScreen(),
             builder: (context, child) {
               return MediaQuery(
                 data: MediaQuery.of(context)

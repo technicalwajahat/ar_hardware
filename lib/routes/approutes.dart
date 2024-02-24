@@ -5,36 +5,31 @@ import 'package:get/get.dart';
 import '../views/auth/forget_password_screen.dart';
 import '../views/auth/login_screen.dart';
 import '../views/auth/register_screen.dart';
+import '../widgets/loading_widget.dart';
 
 appRoutes() => [
       GetPage(
         name: '/login',
         page: () => const LoginScreen(),
-        transition: Transition.downToUp,
-        transitionDuration: const Duration(milliseconds: 500),
       ),
       GetPage(
         name: '/register',
         page: () => const RegisterScreen(),
-        transition: Transition.downToUp,
-        transitionDuration: const Duration(milliseconds: 500),
       ),
       GetPage(
         name: '/forgetPassword',
         page: () => const ForgetPasswordScreen(),
-        transition: Transition.rightToLeft,
-        transitionDuration: const Duration(milliseconds: 500),
       ),
       GetPage(
         name: '/userDashboard',
         page: () => const UserDashboard(),
-        transition: Transition.rightToLeft,
-        transitionDuration: const Duration(milliseconds: 500),
       ),
       GetPage(
         name: '/vendorDashboard',
         page: () => const VendorDashboard(),
-        transition: Transition.rightToLeft,
-        transitionDuration: const Duration(milliseconds: 500),
+      ),
+      GetPage(
+        name: '/loading',
+        page: () => const LoadingScreen(),
       ),
     ];

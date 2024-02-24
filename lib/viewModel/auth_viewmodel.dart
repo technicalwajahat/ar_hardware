@@ -31,7 +31,6 @@ class AuthViewModel extends GetxController {
   void loginUser(String email, String password, BuildContext context) {
     _authRepo.loginWithEmailAndPassword(email, password, context).then((_) {
       Utils.snackBar("Login Successfully!", context);
-      clearFields();
     });
   }
 
@@ -43,7 +42,6 @@ class AuthViewModel extends GetxController {
       user.id = _authRepo.firebaseUser.value!.uid;
       _userRepo.createUser(user, context);
       Utils.snackBar("Success, Your account has been created.", context);
-      clearFields();
     });
   }
 
@@ -66,17 +64,17 @@ class AuthViewModel extends GetxController {
   }
 
   // Clear Fields
-  void clearFields() {
-    loginPassword.clear();
-    registerPassword.clear();
-    registerEmail.clear();
-    loginEmail.clear();
-    forgetEmail.clear();
-    fullName.clear();
-    username.clear();
-    phone.clear();
-    confirmPassword.clear();
-  }
+  // void clearFields() {
+  //   loginPassword.clear();
+  //   registerPassword.clear();
+  //   registerEmail.clear();
+  //   loginEmail.clear();
+  //   forgetEmail.clear();
+  //   fullName.clear();
+  //   username.clear();
+  //   phone.clear();
+  //   confirmPassword.clear();
+  // }
 
   void checkObscurePassword() {
     isObscure.value = !isObscure.value;
