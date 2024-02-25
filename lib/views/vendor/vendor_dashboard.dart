@@ -1,5 +1,6 @@
-import 'package:ar_hardware/widgets/appBar.dart';
 import 'package:flutter/material.dart';
+
+import '../../repository/auth_repository.dart';
 
 class VendorDashboard extends StatefulWidget {
   const VendorDashboard({super.key});
@@ -11,11 +12,21 @@ class VendorDashboard extends StatefulWidget {
 class _VendorDashboardState extends State<VendorDashboard> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: AppBarWidget(text: 'Vendor'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Vendor",
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+        ),
+      ),
       body: SafeArea(
         child: Center(
-          child: Text("Vendor Dashboard"),
+          child: FilledButton(
+            onPressed: () {
+              AuthRepository.instance.logout();
+            },
+            child: const Text("Logout"),
+          ),
         ),
       ),
     );
