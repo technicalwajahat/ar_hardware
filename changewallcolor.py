@@ -12,33 +12,31 @@ def resize_and_pad(img, size, pad_color=0):
     h, w = img.shape[:2]
     sh, sw = size
 
-    # interpolation method
-    if h > sh or w > sw: # shrinking image
+    if h > sh or w > sw:
         interp = cv2.INTER_AREA
-    else: # stretching image
+    else: 
         interp = cv2.INTER_CUBIC
 
-    # aspect ratio of image
     aspect = w/h  
 
-    if aspect > 1: # horizontal image
+    if aspect > 1: 
         new_w = sw
         new_h = np.round(new_w/aspect).astype(int)
         pad_vert = (sh-new_h)/2
         pad_top, pad_bot = np.floor(pad_vert).astype(int), np.ceil(pad_vert).astype(int)
         pad_left, pad_right = 0, 0
-    elif aspect < 1: # vertical image
+    elif aspect < 1: 
         new_h = sh
         new_w = np.round(new_h*aspect).astype(int)
         pad_horz = (sw-new_w)/2
         pad_left, pad_right = np.floor(pad_horz).astype(int), np.ceil(pad_horz).astype(int)
         pad_top, pad_bot = 0, 0
-    else: # square image
+    else:
         new_h, new_w = sh, sw
         pad_left, pad_right, pad_top, pad_bot = 0, 0, 0, 0
 
     # set pad color
-    if len(img.shape) is 3 and not isinstance(pad_color, (list, tuple, np.ndarray)): # color image but only one color provided
+    if len(img.shape) == 3 and not isinstance(pad_color, (list, tuple, np.ndarray)): # color image but only one color provided
         pad_color = [pad_color]*3
 
     # scale and pad
@@ -49,7 +47,7 @@ def resize_and_pad(img, size, pad_color=0):
 
 
 def get_outline_img(img):
-    return cv2.Canny(img,50,200)  # todo: can be optimised later
+    return cv2.Canny(img,17,250)  # todo: can be optimised later
 
 
 def get_colored_image(img, new_color, pattern_image):
@@ -81,9 +79,8 @@ def select_wall(outline_img, position):
     wall = outline_img.copy()
     scaled_mask = resize_and_pad(outline_img, (h+2,w+2), 255)
     cv2.floodFill(wall, scaled_mask, position, 255)   # todo: can be optimised later
-    cv2.subtract(wall, outline_img, wall) 
+    cv2.subtract(wall, outline_img, wall)
     return wall
-
 
 def merge_images(img, colored_image, wall):
     colored_image = cv2.bitwise_and(colored_image, colored_image, mask=wall)
@@ -126,11 +123,12 @@ def change_color(image_name, position, new_color, pattern_image):
     end = start = datetime.timestamp(datetime.now())
     print (end-start)
     # save_image(image_name, final_img)
-    show_images(original_img, colored_image, selected_wall, final_img)
+    print(type(final_img))
+    # show_images(original_img, colored_image, selected_wall, final_img)
     
 
 
-change_color('bedroom.jpg', (300, 100), [135, 168, 161], None)
+# change_color('bedroom.jpg', (300, 100), [220, 180, 170], None)
 # change_color('img3.jpg', (300, 100), None, 'pattern3.jpg')
 
 # PINK: 220, 180, 170
