@@ -40,7 +40,7 @@ class AuthViewModel extends GetxController {
         .createUserWithEmailAndPassword(user.email!, user.password!, context)
         .then((_) {
       user.id = _authRepo.firebaseUser.value!.uid;
-      _userRepo.createUser(user, context);
+      _userRepo.createUser(user);
       Utils.snackBar("Success, Your account has been created.", context);
     });
   }
@@ -62,19 +62,6 @@ class AuthViewModel extends GetxController {
       Utils.snackBar("Email Sent!", context);
     });
   }
-
-  // Clear Fields
-  // void clearFields() {
-  //   loginPassword.clear();
-  //   registerPassword.clear();
-  //   registerEmail.clear();
-  //   loginEmail.clear();
-  //   forgetEmail.clear();
-  //   fullName.clear();
-  //   username.clear();
-  //   phone.clear();
-  //   confirmPassword.clear();
-  // }
 
   void checkObscurePassword() {
     isObscure.value = !isObscure.value;
