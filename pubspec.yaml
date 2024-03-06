@@ -19,8 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
-#  sdk: '>=3.0.0-409.0.dev <4.0.0'
+  #  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.0.0-409.0.dev <4.0.0'
 
 
 # Dependencies specify other packages that your package needs in order to work.
@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.6
   firebase_core: ^2.26.0
   firebase_auth:
+  image_picker: ^1.0.7
   auto_size_text: ^3.0.0
   firebase_storage: ^11.6.8
   cloud_firestore: ^4.15.7

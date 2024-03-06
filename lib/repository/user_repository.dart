@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../models/user_model.dart';
@@ -10,7 +9,7 @@ class UserRepository extends GetxController {
   final _db = FirebaseFirestore.instance;
 
   // Create User
-  createUser(UserModel userModel, BuildContext context) {
+  createUser(UserModel userModel) {
     _db.collection("users").add(userModel.toJson());
   }
 
@@ -24,7 +23,7 @@ class UserRepository extends GetxController {
   }
 
   // Dashboard Navigation
-  void navigationDashboard(String uid) async {
+  void navigationDashboard(String? uid) async {
     final snapshot =
         await _db.collection("users").where('id', isEqualTo: uid).get();
     final userData = snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;

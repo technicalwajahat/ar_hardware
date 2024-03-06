@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class ProductFields extends StatefulWidget {
+  final String name;
+  final String regExp;
+  final String validator;
+  final bool enabled;
+  final TextInputType textInputType;
+  final TextInputAction textInputAction;
+  final TextEditingController controller;
+
+  const ProductFields({
+    super.key,
+    required this.name,
+    required this.regExp,
+    required this.validator,
+    required this.textInputType,
+    required this.controller,
+    required this.textInputAction,
+    required this.enabled,
+  });
+
+  @override
+  State<ProductFields> createState() => _ProductFieldsState();
+}
+
+class _ProductFieldsState extends State<ProductFields> {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      autofocus: false,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      controller: widget.controller,
+      keyboardType: widget.textInputType,
+      enabled: widget.enabled,
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(50),
+        FilteringTextInputFormatter.allow(RegExp(widget.regExp)),
+      ],
+      validator: (value) {
+        if (value!.isEmpty) {
+          return (widget.validator);
+        }
+        return null;
+      },
+      onSaved: (value) {
+        widget.controller.text = value!;
+      },
+      textInputAction: widget.textInputAction,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: widget.name,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+}
