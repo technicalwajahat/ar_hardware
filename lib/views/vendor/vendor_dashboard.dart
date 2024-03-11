@@ -59,7 +59,7 @@ class _VendorDashboardState extends State<VendorDashboard> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               SizedBox(
-                height: Get.height * 0.02,
+                height: Get.height * 0.03,
               ),
               FutureBuilder(
                 future: _productViewModel.fetchProducts(),

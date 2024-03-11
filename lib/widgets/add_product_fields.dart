@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ProductFields extends StatefulWidget {
+class AddProductFields extends StatefulWidget {
   final String name;
   final String regExp;
   final String validator;
@@ -10,7 +10,7 @@ class ProductFields extends StatefulWidget {
   final TextInputAction textInputAction;
   final TextEditingController controller;
 
-  const ProductFields({
+  const AddProductFields({
     super.key,
     required this.name,
     required this.regExp,
@@ -22,10 +22,10 @@ class ProductFields extends StatefulWidget {
   });
 
   @override
-  State<ProductFields> createState() => _ProductFieldsState();
+  State<AddProductFields> createState() => _AddProductFieldsState();
 }
 
-class _ProductFieldsState extends State<ProductFields> {
+class _AddProductFieldsState extends State<AddProductFields> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(

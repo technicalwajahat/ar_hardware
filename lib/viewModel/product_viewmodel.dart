@@ -12,10 +12,12 @@ class ProductViewModel extends GetxController {
 
   final ProductRepository _productRepo = Get.put(ProductRepository());
   final AuthRepository _authRepo = Get.put(AuthRepository());
+  String? storagePath;
 
   final productName = TextEditingController();
   final productPrice = TextEditingController();
   final productMaterial = TextEditingController();
+  final productStock = TextEditingController();
   final productShipped = TextEditingController(text: "Ships all over Pakistan");
 
   Future<String> uploadProduct(File imageFile) async {
@@ -29,5 +31,13 @@ class ProductViewModel extends GetxController {
   Future<List<ProductModel>> fetchProducts() async {
     var userId = _authRepo.firebaseUser.value!.uid;
     return await _productRepo.getAllProducts(userId);
+  }
+
+  updateProduct(ProductModel productModel, BuildContext context) async {
+    await _productRepo.updateProduct(productModel, context);
+  }
+
+  deleteProduct(String id) async {
+    await _productRepo.deleteProduct(id);
   }
 }

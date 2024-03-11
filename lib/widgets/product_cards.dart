@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../models/product_model.dart';
+import '../viewModel/product_viewmodel.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
 
-  const ProductCard({super.key, required this.product});
+  final _productViewModel = Get.put(ProductViewModel());
+
+  ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +18,11 @@ class ProductCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       elevation: 3,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: 100,
-            height: 100,
+            width: 115,
+            height: 115,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(10),
@@ -32,33 +35,64 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: Get.width * 0.05),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Flexible(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  product.productName.toString(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                SizedBox(height: Get.height * 0.008),
+                AutoSizeText(
+                  "Price: ${product.productPrice}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(height: Get.height * 0.003),
+                AutoSizeText(
+                  "Stock: ${product.productStock}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(height: Get.height * 0.003),
+                AutoSizeText(
+                  "Material: ${product.productMaterial}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
             children: [
-              AutoSizeText(
-                product.productName.toString(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: Get.height * 0.01),
-              AutoSizeText(
-                "Price: ${product.productPrice}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
+              Container(
+                margin: EdgeInsets.zero,
+                child: IconButton(
+                  onPressed: () {
+                    Get.toNamed("/editProduct",
+                        arguments: {"product": product});
+                  },
+                  icon: const Icon(Icons.edit, color: Colors.green),
                 ),
               ),
-              const SizedBox(height: 4),
-              AutoSizeText(
-                "Material: ${product.productMaterial}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
+              Container(
+                margin: EdgeInsets.zero,
+                child: IconButton(
+                  onPressed: () {
+                    _productViewModel.deleteProduct(product.id.toString());
+                  },
+                  icon: const Icon(Icons.delete, color: Colors.red),
                 ),
               ),
             ],

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:ar_hardware/models/product_model.dart';
 import 'package:ar_hardware/utils/utils.dart';
 import 'package:ar_hardware/viewModel/product_viewmodel.dart';
+import 'package:ar_hardware/widgets/add_product_fields.dart';
 import 'package:ar_hardware/widgets/appBar.dart';
-import 'package:ar_hardware/widgets/product_fields.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   ProductViewModel productViewModel = Get.put(ProductViewModel());
   final _formKey = GlobalKey<FormState>();
   final authRepo = Get.put(AuthRepository());
-  String? storagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  ProductFields(
+                  AddProductFields(
                     name: "Product Name",
                     regExp: "[a-zA-Z ]",
                     enabled: true,
@@ -47,7 +46,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(height: Get.height * 0.02),
-                  ProductFields(
+                  AddProductFields(
                     name: "Product Price",
                     regExp: "[0-9]",
                     validator: "Product Price cannot be empty",
@@ -57,17 +56,27 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     enabled: true,
                   ),
                   SizedBox(height: Get.height * 0.02),
-                  ProductFields(
+                  AddProductFields(
                     regExp: "[a-zA-Z ]",
                     name: "Product Material",
                     enabled: true,
                     validator: "Product Material cannot be empty",
                     textInputType: TextInputType.name,
                     controller: productViewModel.productMaterial,
+                    textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  AddProductFields(
+                    regExp: "[0-9]",
+                    name: "Product Stock",
+                    enabled: true,
+                    validator: "Product Stock cannot be empty",
+                    textInputType: TextInputType.number,
+                    controller: productViewModel.productStock,
                     textInputAction: TextInputAction.done,
                   ),
                   SizedBox(height: Get.height * 0.02),
-                  ProductFields(
+                  AddProductFields(
                     name: "Product Shipped",
                     regExp: "[a-zA-Z ]",
                     enabled: false,
@@ -103,22 +112,25 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ),
                     ),
                     onPressed: () {
-                      if (storagePath == null) {
+                      if (productViewModel.storagePath == null) {
                         Utils.snackBar("Please choose an image", context);
                       } else {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (_formKey.currentState!.validate()) {
                           final productModel = ProductModel(
-                            id: authRepo.firebaseUser.value!.uid,
+                            userId: authRepo.firebaseUser.value!.uid,
                             productName:
                                 productViewModel.productName.text.trim(),
                             productPrice:
-                                "${productViewModel.productPrice.text.trim()} \$",
+                                "${productViewModel.productPrice.text.trim()}\$",
                             productMaterial:
                                 productViewModel.productMaterial.text.trim(),
                             productShipped:
                                 productViewModel.productShipped.text.trim(),
-                            productImage: storagePath ?? "Choose Image",
+                            productStock:
+                                productViewModel.productStock.text.trim(),
+                            productImage:
+                                productViewModel.storagePath ?? "Choose Image",
                           );
                           productViewModel.addProduct(productModel, context);
                         }
@@ -145,7 +157,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         .pickImage(source: ImageSource.gallery, imageQuality: 100)
         .then((value) {
       productViewModel.uploadProduct(File(value!.path)).then((value) {
-        storagePath = value;
+        productViewModel.storagePath = value;
       });
     });
   }

@@ -23,16 +23,46 @@ class ProductRepository extends GetxController {
   addProduct(ProductModel productModel, BuildContext context) {
     _db.collection("products").add(productModel.toJson()).then((_) {
       Utils.snackBar("Product Added Successfully!.", context);
+      refresh();
       Get.back();
+      refresh();
     });
   }
 
   Future<List<ProductModel>> getAllProducts(String userId) async {
-    final querySnapshot =
-        await _db.collection("products").where("id", isEqualTo: userId).get();
+    final querySnapshot = await _db
+        .collection("products")
+        .where("userId", isEqualTo: userId)
+        .get();
 
     final receiptData =
         querySnapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
     return receiptData;
+  }
+
+  updateProduct(ProductModel productModel, BuildContext context) async {
+    print(productModel.userId);
+    print(productModel.id);
+    print(productModel.productName);
+    print(productModel.productPrice);
+    print(productModel.productMaterial);
+    print(productModel.productStock);
+    print(productModel.productShipped);
+    print(productModel.productImage);
+    await _db
+        .collection("products")
+        .doc(productModel.id)
+        .update(productModel.toJson())
+        .then((value) {
+      Utils.snackBar("Product Updated Successfully!.", context);
+      refresh();
+      Get.back();
+    });
+  }
+
+  Future<void> deleteProduct(String id) async {
+    await _db.collection("products").doc(id).delete().then((value) {
+      refresh();
+    });
   }
 }

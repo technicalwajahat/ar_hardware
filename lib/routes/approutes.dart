@@ -1,5 +1,6 @@
 import 'package:ar_hardware/views/user/user_dashboard.dart';
-import 'package:ar_hardware/views/vendor/addProduct.dart';
+import 'package:ar_hardware/views/vendor/add_product.dart';
+import 'package:ar_hardware/views/vendor/edit_product.dart';
 import 'package:ar_hardware/views/vendor/vendor_dashboard.dart';
 import 'package:get/get.dart';
 
@@ -36,5 +37,9 @@ appRoutes() => [
       GetPage(
         name: '/addProduct',
         page: () => const AddProductScreen(),
+      ),
+      GetPage(
+        name: '/editProduct',
+        page: () => const EditProductScreen(),
       ),
     ];
