@@ -23,10 +23,10 @@ class ProductModel {
 
   factory ProductModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
-    final data = document.data()!;
+    final data = document.data();
     return ProductModel(
-      id: data['id'] ?? document.id,
-      userId: data['userId'] ?? '',
+      id: document.id,
+      userId: data!['userId'] ?? '',
       productName: data['productName'] ?? '',
       productPrice: data['productPrice'] ?? '',
       productMaterial: data['productMaterial'] ?? '',

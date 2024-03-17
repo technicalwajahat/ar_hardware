@@ -35,44 +35,41 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  product.productName.toString(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AutoSizeText(
+                product.productName.toString(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-                SizedBox(height: Get.height * 0.008),
-                AutoSizeText(
-                  "Price: ${product.productPrice}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                  ),
+              ),
+              SizedBox(height: Get.height * 0.008),
+              AutoSizeText(
+                "${product.productPrice}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
                 ),
-                SizedBox(height: Get.height * 0.003),
-                AutoSizeText(
-                  "Stock: ${product.productStock}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                  ),
+              ),
+              SizedBox(height: Get.height * 0.003),
+              AutoSizeText(
+                "${product.productStock}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
                 ),
-                SizedBox(height: Get.height * 0.003),
-                AutoSizeText(
-                  "Material: ${product.productMaterial}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                  ),
+              ),
+              SizedBox(height: Get.height * 0.003),
+              AutoSizeText(
+                "${product.productMaterial}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Row(
             children: [
@@ -80,8 +77,8 @@ class ProductCard extends StatelessWidget {
                 margin: EdgeInsets.zero,
                 child: IconButton(
                   onPressed: () {
-                    Get.toNamed("/editProduct",
-                        arguments: {"product": product});
+                    Get.toNamed("/editProduct", arguments: {"product": product})
+                        ?.then((value) => _productViewModel.fetchProducts());
                   },
                   icon: const Icon(Icons.edit, color: Colors.green),
                 ),
@@ -90,7 +87,9 @@ class ProductCard extends StatelessWidget {
                 margin: EdgeInsets.zero,
                 child: IconButton(
                   onPressed: () {
-                    _productViewModel.deleteProduct(product.id.toString());
+                    _productViewModel
+                        .deleteProduct(product.id.toString())
+                        .then((value) => _productViewModel.fetchProducts());
                   },
                   icon: const Icon(Icons.delete, color: Colors.red),
                 ),

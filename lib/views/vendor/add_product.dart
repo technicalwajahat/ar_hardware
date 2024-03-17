@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:ar_hardware/models/product_model.dart';
-import 'package:ar_hardware/utils/utils.dart';
 import 'package:ar_hardware/viewModel/product_viewmodel.dart';
 import 'package:ar_hardware/widgets/add_product_fields.dart';
 import 'package:ar_hardware/widgets/appBar.dart';
@@ -11,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../repository/auth_repository.dart';
+import '../../utils/utils.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -112,29 +112,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ),
                     ),
                     onPressed: () {
-                      if (productViewModel.storagePath == null) {
-                        Utils.snackBar("Please choose an image", context);
-                      } else {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        if (_formKey.currentState!.validate()) {
-                          final productModel = ProductModel(
-                            userId: authRepo.firebaseUser.value!.uid,
-                            productName:
-                                productViewModel.productName.text.trim(),
-                            productPrice:
-                                "${productViewModel.productPrice.text.trim()}\$",
-                            productMaterial:
-                                productViewModel.productMaterial.text.trim(),
-                            productShipped:
-                                productViewModel.productShipped.text.trim(),
-                            productStock:
-                                productViewModel.productStock.text.trim(),
-                            productImage:
-                                productViewModel.storagePath ?? "Choose Image",
-                          );
-                          productViewModel.addProduct(productModel, context);
-                        }
-                      }
+                      _addProduct(context);
                     },
                     child: const AutoSizeText(
                       "Add Product",
@@ -157,8 +135,28 @@ class _AddProductScreenState extends State<AddProductScreen> {
         .pickImage(source: ImageSource.gallery, imageQuality: 100)
         .then((value) {
       productViewModel.uploadProduct(File(value!.path)).then((value) {
-        productViewModel.storagePath = value;
+        productViewModel.storagePath.value = value;
       });
     });
+  }
+
+  void _addProduct(BuildContext context) {
+    if (productViewModel.storagePath.value == "Choose Image!") {
+      Utils.snackBar("Please choose an image", context);
+    } else {
+      FocusManager.instance.primaryFocus?.unfocus();
+      if (_formKey.currentState!.validate()) {
+        final productModel = ProductModel(
+          userId: authRepo.firebaseUser.value!.uid,
+          productName: productViewModel.productName.text.trim(),
+          productPrice: "${productViewModel.productPrice.text.trim()}\$",
+          productMaterial: productViewModel.productMaterial.text.trim(),
+          productShipped: productViewModel.productShipped.text.trim(),
+          productStock: productViewModel.productStock.text.trim(),
+          productImage: productViewModel.storagePath.value,
+        );
+        productViewModel.addProduct(productModel, context).then((value) {});
+      }
+    }
   }
 }

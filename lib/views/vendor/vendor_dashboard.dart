@@ -31,6 +31,12 @@ class _VendorDashboardState extends State<VendorDashboard> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _productViewModel.fetchProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,69 +46,71 @@ class _VendorDashboardState extends State<VendorDashboard> {
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AutoSizeText(
-                "Products",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-              ),
-              SizedBox(
-                height: Get.height * 0.005,
-              ),
-              const AutoSizeText(
-                "AR Hardware Tools",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: Get.height * 0.03,
-              ),
-              FutureBuilder(
-                future: _productViewModel.fetchProducts(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    List<ProductModel> products = snapshot.data!;
-                    if (snapshot.hasData) {
-                      if (products.isNotEmpty) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: products.length,
-                          itemBuilder: (context, index) =>
-                              ProductCard(product: products[index]),
-                        );
-                      } else {
-                        return const Center(
-                          child: AutoSizeText(
-                            textAlign: TextAlign.center,
-                            'No product found. Add some using the "+" button!',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 16),
-                          ),
-                        );
-                      }
-                    } else {
-                      return Center(
-                        child: AutoSizeText(
-                            "Error fetching receipts: ${snapshot.error}"),
-                      );
-                    }
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AutoSizeText(
+              "Products",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: Get.height * 0.005,
+            ),
+            const AutoSizeText(
+              "AR Hardware Tools",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(
+              height: Get.height * 0.03,
+            ),
+            StreamBuilder<List<ProductModel>>(
+              stream: _productViewModel.productsStream,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Error: ${snapshot.error}"),
+                  );
+                } else {
+                  List<ProductModel>? products = snapshot.data;
+                  if (products != null && products.isNotEmpty) {
+                    return Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: products.length,
+                        itemBuilder: (context, index) =>
+                            ProductCard(product: products[index]),
+                      ),
+                    );
                   } else {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: AutoSizeText(
+                        'No product found. Add some using the "+" button!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 16),
+                      ),
+                    );
                   }
-                },
-              ),
-            ],
-          ),
+                }
+              },
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Add Product",
         onPressed: () {
-          Get.toNamed('/addProduct');
+          Get.toNamed('/addProduct', arguments: null)!.then((value) {
+            _productViewModel.fetchProducts();
+            _productViewModel.clearFormData();
+          });
         },
         child: const Icon(Icons.add_circle_outlined),
       ),

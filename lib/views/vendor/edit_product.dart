@@ -24,10 +24,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final authRepo = Get.put(AuthRepository());
   final _formKey = GlobalKey<FormState>();
   final product = Get.arguments["product"] as ProductModel;
-  String? storagePath;
 
   @override
   Widget build(BuildContext context) {
+    final id = product.id;
     final userId = TextEditingController(text: product.userId);
     final productName = TextEditingController(text: product.productName);
     final productPrice = TextEditingController(text: product.productPrice);
@@ -35,6 +35,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
         TextEditingController(text: product.productMaterial);
     final productStock = TextEditingController(text: product.productStock);
     final productShipped = TextEditingController(text: product.productShipped);
+
+    String text = productPrice.text;
+    if (text.isNotEmpty && text.endsWith('\$')) {
+      text = text.substring(0, text.length - 1);
+      productPrice.text = text;
+    }
+
     return Scaffold(
       appBar: const AppBarWidget(text: "Edit Product"),
       body: SafeArea(
@@ -121,19 +128,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       ),
                     ),
                     onPressed: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      if (_formKey.currentState!.validate()) {
-                        final productModel = ProductModel(
-                          userId: userId.text,
-                          productName: productName.text.trim(),
-                          productPrice: "${productPrice.text.trim()}\$",
-                          productMaterial: productMaterial.text.trim(),
-                          productShipped: productShipped.text.trim(),
-                          productStock: productStock.text.trim(),
-                          productImage: storagePath ?? product.productImage,
-                        );
-                        productViewModel.updateProduct(productModel, context);
-                      }
+                      _updateProduct(
+                          context,
+                          id!,
+                          userId,
+                          productName,
+                          productPrice,
+                          productMaterial,
+                          productStock,
+                          productShipped);
                     },
                     child: const AutoSizeText(
                       "Update",
@@ -156,8 +159,35 @@ class _EditProductScreenState extends State<EditProductScreen> {
         .pickImage(source: ImageSource.gallery, imageQuality: 100)
         .then((value) {
       productViewModel.uploadProduct(File(value!.path)).then((value) {
-        storagePath = value;
+        productViewModel.storagePath.value = value;
       });
     });
+  }
+
+  void _updateProduct(
+      BuildContext context,
+      String id,
+      TextEditingController userId,
+      TextEditingController productName,
+      TextEditingController productPrice,
+      TextEditingController productMaterial,
+      TextEditingController productStock,
+      TextEditingController productShipped) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (_formKey.currentState!.validate()) {
+      final productModel = ProductModel(
+        userId: userId.text,
+        id: id,
+        productName: productName.text.trim(),
+        productPrice: "${productPrice.text.trim()}\$",
+        productMaterial: productMaterial.text.trim(),
+        productShipped: productShipped.text.trim(),
+        productStock: productStock.text.trim(),
+        productImage: productViewModel.storagePath.value == "Choose Image!"
+            ? product.productImage
+            : productViewModel.storagePath.value,
+      );
+      productViewModel.updateProduct(productModel, context);
+    }
   }
 }
