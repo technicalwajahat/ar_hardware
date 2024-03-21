@@ -1,3 +1,4 @@
+import 'package:ar_hardware/views/user/paint_wall_screen.dart';
 import 'package:ar_hardware/views/user/take_picture_screen.dart';
 import 'package:ar_hardware/views/user/user_dashboard.dart';
 import 'package:ar_hardware/views/user/user_home_screen.dart';
@@ -56,5 +57,9 @@ appRoutes() => [
       GetPage(
         name: '/takePicture',
         page: () => const TakePictures(),
+      ),
+      GetPage(
+        name: '/paintWall',
+        page: () => const PaintWallScreen(),
       ),
     ];

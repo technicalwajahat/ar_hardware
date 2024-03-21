@@ -42,10 +42,10 @@ dependencies:
   firebase_storage:
   provider: ^6.1.2
   image_picker: ^1.0.7
-  image_cropper: ^5.0.1
   auto_size_text: ^3.0.0
   cupertino_icons: ^1.0.6
   shared_preferences: ^2.2.2
+  flutter_colorpicker: ^1.0.3
   permission_handler: ^11.3.0
   flutter_native_splash:
   flutter_launcher_icons: ^0.13.1
