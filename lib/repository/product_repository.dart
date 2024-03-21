@@ -28,12 +28,21 @@ class ProductRepository extends GetxController {
     });
   }
 
-  // Get All Products
-  Future<List<ProductModel>> getAllProducts(String userId) async {
+  // Get Products by ID
+  Future<List<ProductModel>> getProducts(String userId) async {
     final querySnapshot = await _db
         .collection("products")
         .where("userId", isEqualTo: userId)
         .get();
+
+    final receiptData =
+        querySnapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
+    return receiptData;
+  }
+
+  // Get All Products
+  Future<List<ProductModel>> getAllProducts() async {
+    final querySnapshot = await _db.collection("products").get();
 
     final receiptData =
         querySnapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();

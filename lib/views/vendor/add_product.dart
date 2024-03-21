@@ -149,7 +149,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         final productModel = ProductModel(
           userId: authRepo.firebaseUser.value!.uid,
           productName: productViewModel.productName.text.trim(),
-          productPrice: "${productViewModel.productPrice.text.trim()}\$",
+          productPrice: "\$${productViewModel.productPrice.text.trim()}",
           productMaterial: productViewModel.productMaterial.text.trim(),
           productShipped: productViewModel.productShipped.text.trim(),
           productStock: productViewModel.productStock.text.trim(),

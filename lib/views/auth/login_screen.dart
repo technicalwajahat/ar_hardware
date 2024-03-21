@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value!.isEmpty) {
           return ("Please enter your email");
         }
-        if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$')
+        if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([a-zA-Z\d-]+\.)+[a-zA-Z]{2,}$')
             .hasMatch(value)) {
           return ("Please enter a valid email");
         }

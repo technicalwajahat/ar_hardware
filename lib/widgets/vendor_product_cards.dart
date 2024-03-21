@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import '../models/product_model.dart';
 import '../viewModel/product_viewmodel.dart';
 
-class ProductCard extends StatelessWidget {
+class VendorProductCard extends StatelessWidget {
   final ProductModel product;
 
   final _productViewModel = Get.put(ProductViewModel());
 
-  ProductCard({super.key, required this.product});
+  VendorProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {

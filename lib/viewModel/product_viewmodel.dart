@@ -47,7 +47,13 @@ class ProductViewModel extends GetxController {
   // Fetch Product
   fetchProducts() async {
     var userId = _authRepo.firebaseUser.value!.uid;
-    List<ProductModel> products = await _productRepo.getAllProducts(userId);
+    List<ProductModel> products = await _productRepo.getProducts(userId);
+    _productsController.add(products);
+  }
+
+  // Fetch All Product
+  fetchAllProducts() async {
+    List<ProductModel> products = await _productRepo.getAllProducts();
     _productsController.add(products);
   }
 

@@ -1,8 +1,9 @@
 import 'package:ar_hardware/repository/auth_repository.dart';
 import 'package:get/get.dart';
 
-class VendorDashboardViewModel extends GetxController {
+class DashboardViewModel extends GetxController {
   var screenIndex = 0.obs;
+  var selectedIndex = 0.obs;
   final _authRepo = Get.put(AuthRepository());
 
   void handleScreenChanged(int selectedScreen) {
@@ -12,4 +13,6 @@ class VendorDashboardViewModel extends GetxController {
       _authRepo.logout();
     }
   }
+
+  void changeIndex(int index) => selectedIndex.value = index;
 }

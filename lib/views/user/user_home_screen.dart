@@ -1,51 +1,30 @@
-import 'package:ar_hardware/models/product_model.dart';
-import 'package:ar_hardware/viewModel/dashboard_viewmodel.dart';
-import 'package:ar_hardware/viewModel/product_viewmodel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/vendor_product_cards.dart';
+import '../../models/product_model.dart';
+import '../../viewModel/product_viewmodel.dart';
+import '../../widgets/user_product_cards.dart';
 
-class DrawerData {
-  const DrawerData(this.label, this.selectedIcon);
-
-  final String label;
-  final Widget selectedIcon;
-}
-
-class VendorDashboard extends StatefulWidget {
-  const VendorDashboard({super.key});
+class UserHomeScreen extends StatefulWidget {
+  const UserHomeScreen({super.key});
 
   @override
-  State<VendorDashboard> createState() => _VendorDashboardState();
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
 }
 
-class _VendorDashboardState extends State<VendorDashboard> {
+class _UserHomeScreenState extends State<UserHomeScreen> {
   final _productViewModel = Get.put(ProductViewModel());
-  final _dashboardViewModel = Get.put(DashboardViewModel());
-
-  static List<DrawerData> destinations = <DrawerData>[
-    const DrawerData('Home', Icon(Icons.home_rounded)),
-    const DrawerData('Logout', Icon(Icons.logout_rounded))
-  ];
 
   @override
   void initState() {
     super.initState();
-    _productViewModel.fetchProducts();
+    _productViewModel.fetchAllProducts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Vendor",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
         child: Column(
@@ -84,7 +63,7 @@ class _VendorDashboardState extends State<VendorDashboard> {
                         shrinkWrap: true,
                         itemCount: products.length,
                         itemBuilder: (context, index) =>
-                            VendorProductCard(product: products[index]),
+                            UserProductCard(product: products[index]),
                       ),
                     );
                   } else {
@@ -102,44 +81,6 @@ class _VendorDashboardState extends State<VendorDashboard> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: "Add Product",
-        onPressed: () {
-          Get.toNamed('/addProduct', arguments: null)!.then((value) {
-            _productViewModel.fetchProducts();
-            _productViewModel.clearFormData();
-          });
-        },
-        child: const Icon(Icons.add_circle_outlined),
-      ),
-      drawer: NavigationDrawer(
-        onDestinationSelected: _dashboardViewModel.handleScreenChanged,
-        selectedIndex: _dashboardViewModel.screenIndex.value,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.fromLTRB(24, 22, 16, 5),
-            child: AutoSizeText(
-              'AR Hardware Tool',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(24, 5, 24, 10),
-            child: Divider(
-              color: Colors.black45,
-            ),
-          ),
-          ...destinations.map(
-            (DrawerData destination) {
-              return NavigationDrawerDestination(
-                label: AutoSizeText(destination.label),
-                icon: destination.selectedIcon,
-                selectedIcon: destination.selectedIcon,
-              );
-            },
-          ),
-        ],
       ),
     );
   }
