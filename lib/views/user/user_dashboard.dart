@@ -1,7 +1,9 @@
 import 'package:ar_hardware/views/user/user_home_screen.dart';
+import 'package:ar_hardware/views/user/user_orders.dart';
 import 'package:ar_hardware/views/user/user_settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 import '../../viewModel/dashboard_viewmodel.dart';
 
@@ -24,11 +26,25 @@ class _UserDashboardState extends State<UserDashboard> {
           "AR Hardware Haven",
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         ),
+        actions: [
+          PersistentShoppingCart().showCartItemCountWidget(
+            cartItemCountWidgetBuilder: (itemCount) => IconButton(
+              onPressed: () {
+                Get.toNamed('/myCart');
+              },
+              icon: Badge(
+                label: Text(itemCount.toString()),
+                child: const Icon(Icons.shopping_cart),
+              ),
+            ),
+          ),
+          const SizedBox(width: 20.0)
+        ],
       ),
       body: Obx(
         () => IndexedStack(
           index: _dashboardViewModel.selectedIndex.value,
-          children: const [UserHomeScreen(), UserSettingScreen()],
+          children: const [UserHomeScreen(), UserOrders(), UserSettingScreen()],
         ),
       ),
       bottomNavigationBar: Obx(
@@ -42,6 +58,11 @@ class _UserDashboardState extends State<UserDashboard> {
               label: 'Home',
             ),
             NavigationDestination(
+              selectedIcon: Icon(Icons.shopping_bag_rounded),
+              icon: Icon(Icons.shopping_bag_rounded),
+              label: 'Orders',
+            ),
+            NavigationDestination(
               selectedIcon: Icon(Icons.settings),
               icon: Icon(Icons.settings),
               label: 'Settings',
@@ -50,12 +71,16 @@ class _UserDashboardState extends State<UserDashboard> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        tooltip: "Camera",
         onPressed: () {
           Get.toNamed('/takePicture');
         },
-        child: const Icon(Icons.camera),
+        child: const Icon(
+          Icons.camera,
+          color: Colors.white,
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -6,6 +6,8 @@ import 'package:ar_hardware/views/user/user_settings_screen.dart';
 import 'package:ar_hardware/views/vendor/add_product.dart';
 import 'package:ar_hardware/views/vendor/edit_product.dart';
 import 'package:ar_hardware/views/vendor/vendor_dashboard.dart';
+import 'package:ar_hardware/views/user/cart_view_screen.dart';
+import 'package:ar_hardware/views/user/checkout_screen.dart';
 import 'package:get/get.dart';
 
 import '../views/auth/forget_password_screen.dart';
@@ -61,5 +63,13 @@ appRoutes() => [
       GetPage(
         name: '/paintWall',
         page: () => const PaintWallScreen(),
+      ),
+      GetPage(
+        name: '/myCart',
+        page: () => const CartViewScreen(),
+      ),
+      GetPage(
+        name: '/checkout',
+        page: () => const CheckoutScreen(),
       ),
     ];

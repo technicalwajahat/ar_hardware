@@ -36,12 +36,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     final productStock = TextEditingController(text: product.productStock);
     final productShipped = TextEditingController(text: product.productShipped);
 
-    String text = productPrice.text;
-    if (text.isNotEmpty && text.endsWith('\$')) {
-      text = text.substring(0, text.length - 1);
-      productPrice.text = text;
-    }
-
     return Scaffold(
       appBar: const AppBarWidget(text: "Edit Product"),
       body: SafeArea(
@@ -179,7 +173,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         userId: userId.text,
         id: id,
         productName: productName.text.trim(),
-        productPrice: "${productPrice.text.trim()}\$",
+        productPrice: productPrice.text.trim(),
         productMaterial: productMaterial.text.trim(),
         productShipped: productShipped.text.trim(),
         productStock: productStock.text.trim(),

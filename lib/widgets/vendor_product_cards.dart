@@ -47,7 +47,7 @@ class VendorProductCard extends StatelessWidget {
               ),
               SizedBox(height: Get.height * 0.008),
               AutoSizeText(
-                "${product.productPrice}",
+                "Price: ${product.productPrice}\$",
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
@@ -55,7 +55,7 @@ class VendorProductCard extends StatelessWidget {
               ),
               SizedBox(height: Get.height * 0.003),
               AutoSizeText(
-                "${product.productStock}",
+                "Stock: ${product.productStock}",
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
@@ -63,7 +63,7 @@ class VendorProductCard extends StatelessWidget {
               ),
               SizedBox(height: Get.height * 0.003),
               AutoSizeText(
-                "${product.productMaterial}",
+                "Material: ${product.productMaterial}",
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14,

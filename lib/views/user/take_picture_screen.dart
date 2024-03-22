@@ -18,8 +18,9 @@ class TakePictures extends StatefulWidget {
 }
 
 class _TakePicturesState extends State<TakePictures> {
-  // File? _selectedImage;
   final Rx<File?> _selectedImage = Rx<File?>(null);
+  Rx<Color> pickerColor = Rx<Color>(const Color(0xffffffff));
+  Rx<Color> currentColor = Rx<Color>(const Color(0xffffffff));
 
   final picker = ImagePicker();
 
@@ -165,9 +166,6 @@ class _TakePicturesState extends State<TakePictures> {
     return Size(image.width.toDouble(), image.height.toDouble());
   }
 
-  Rx<Color> pickerColor = Rx<Color>(const Color(0xffffffff));
-  Rx<Color> currentColor = Rx<Color>(const Color(0xffffffff));
-
   void changeColor(Color color) {
     pickerColor(color);
   }
@@ -186,7 +184,7 @@ class _TakePicturesState extends State<TakePictures> {
           FilledButton(
             child: const Text('Got it'),
             onPressed: () {
-              setState(() => currentColor = pickerColor);
+              currentColor.value = pickerColor.value;
               print(currentColor.value.red);
               print(currentColor.value.blue);
               print(currentColor.value.green);
