@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ar_hardware/models/checkout_model.dart';
 import 'package:ar_hardware/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -64,5 +65,12 @@ class ProductRepository extends GetxController {
   // Delete Product
   Future<void> deleteProduct(String id) async {
     await _db.collection("products").doc(id).delete();
+  }
+
+  checkoutProduct(CheckoutModel checkout, BuildContext context) {
+    _db.collection("checkout").add(checkout.toJson()).then((_) {
+      Utils.snackBar("Order Completed!.", context);
+      Get.toNamed('/userDashboard');
+    });
   }
 }

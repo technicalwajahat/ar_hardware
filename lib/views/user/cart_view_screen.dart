@@ -181,11 +181,18 @@ class _CartViewScreenState extends State<CartViewScreen> {
                   List<PersistentShoppingCartItem> cartItems =
                       cartData['cartItems'];
 
-                  for (var item in cartItems) {
-                    print(item.quantity);
-                  }
+                  // Total Quantity
+                  var quantity = cartItems.length;
 
-                  // Get.toNamed('/checkout');
+                  // Get ID & Product Quantity
+                  List<Map<String, dynamic>> productDetail =
+                      extractedData(cartItems);
+
+                  Get.toNamed('/checkout', arguments: {
+                    'totalPrice': cartData['totalPrice'],
+                    'quantity': quantity,
+                    'productDetail': productDetail
+                  });
                 },
                 child: const AutoSizeText(
                   "Checkout",
@@ -201,5 +208,19 @@ class _CartViewScreenState extends State<CartViewScreen> {
         ),
       ),
     );
+  }
+
+  List<Map<String, dynamic>> extractedData(
+      List<PersistentShoppingCartItem> cartItems) {
+    List<Map<String, dynamic>> data = [];
+
+    for (var item in cartItems) {
+      data.add({
+        'productId': item.productId,
+        'quantity': item.quantity,
+      });
+    }
+
+    return data;
   }
 }

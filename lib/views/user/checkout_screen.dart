@@ -1,7 +1,13 @@
+import 'package:ar_hardware/models/checkout_model.dart';
 import 'package:ar_hardware/widgets/appBar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pay/pay.dart';
+
+import '../../payment_config.dart';
+import '../../repository/auth_repository.dart';
+import '../../viewModel/product_viewmodel.dart';
 
 enum Payment { cash, online }
 
@@ -14,9 +20,19 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   final Rx<Payment> payment = Payment.cash.obs;
+  var arguments = Get.arguments;
+  final authRepo = Get.put(AuthRepository());
+  ProductViewModel productViewModel = Get.put(ProductViewModel());
 
   @override
   Widget build(BuildContext context) {
+    final paymentItems = [
+      PaymentItem(
+        label: 'Total',
+        amount: arguments['totalPrice'].toString(),
+        status: PaymentItemStatus.final_price,
+      )
+    ];
     return Scaffold(
       appBar: const AppBarWidget(text: 'Checkout'),
       body: SafeArea(
@@ -64,7 +80,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              final checkout = CheckoutModel(
+                                userId: authRepo.firebaseUser.value!.uid,
+                                totalAmount: arguments['totalPrice'].toString(),
+                                totalItems: arguments['quantity'].toString(),
+                              );
+                              productViewModel.checkoutProduct(
+                                  checkout, context);
+                            },
                             child: const AutoSizeText(
                               "Pay via Cash",
                               textAlign: TextAlign.center,
@@ -74,7 +98,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ),
                           )
-                        : Container()
+                        : GooglePayButton(
+                            paymentConfiguration:
+                                PaymentConfiguration.fromJsonString(
+                                    defaultGooglePay),
+                            width: double.infinity,
+                            paymentItems: paymentItems,
+                            type: GooglePayButtonType.pay,
+                            onPaymentResult: (result) {},
+                            loadingIndicator: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
                   ],
                 );
               },

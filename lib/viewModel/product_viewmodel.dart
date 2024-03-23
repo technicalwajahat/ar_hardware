@@ -7,6 +7,8 @@ import 'package:ar_hardware/repository/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/checkout_model.dart';
+
 class ProductViewModel extends GetxController {
   static ProductViewModel get instance => Get.find();
 
@@ -66,6 +68,12 @@ class ProductViewModel extends GetxController {
   // Delete Product
   Future<void> deleteProduct(String id) async {
     await _productRepo.deleteProduct(id);
+  }
+
+  // Checkout Product
+  Future<void> checkoutProduct(
+      CheckoutModel checkout, BuildContext context) async {
+    await _productRepo.checkoutProduct(checkout, context);
   }
 
   @override
