@@ -7,6 +7,7 @@ class ProductModel {
   final String? productPrice;
   final String? productMaterial;
   final String? productShipped;
+  final String? productCategories;
   final String? productStock;
   late final String? productImage;
 
@@ -17,6 +18,7 @@ class ProductModel {
     required this.productPrice,
     required this.productMaterial,
     required this.productShipped,
+    required this.productCategories,
     required this.productStock,
     required this.productImage,
   });
@@ -31,6 +33,7 @@ class ProductModel {
       productPrice: data['productPrice'] ?? '',
       productMaterial: data['productMaterial'] ?? '',
       productShipped: data['productShipped'] ?? '',
+      productCategories: data['productCategories'] ?? '',
       productStock: data['productStock'] ?? '',
       productImage: data['productImage'] ?? '',
     );
@@ -43,6 +46,7 @@ class ProductModel {
     data['productPrice'] = productPrice;
     data['productMaterial'] = productMaterial;
     data['productShipped'] = productShipped;
+    data['productCategories'] = productCategories;
     data['productStock'] = productStock;
     data['productImage'] = productImage;
     return data;

@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         builder: (context, ThemeNotifier notifier, child) {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Chris OCR',
+            title: 'AR Hardware',
             theme: notifier.darkTheme ? dark : light,
             darkTheme: notifier.darkTheme ? dark : light,
             getPages: appRoutes(),

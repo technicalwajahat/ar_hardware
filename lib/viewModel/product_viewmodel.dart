@@ -15,6 +15,7 @@ class ProductViewModel extends GetxController {
   final ProductRepository _productRepo = Get.put(ProductRepository());
   final AuthRepository _authRepo = Get.put(AuthRepository());
   var storagePath = "Choose Image!".obs;
+  var productCategory = 'Select Category'.obs;
 
   final productName = TextEditingController();
   final productPrice = TextEditingController();
@@ -23,8 +24,11 @@ class ProductViewModel extends GetxController {
   final productShipped = TextEditingController(text: "Ships all over Pakistan");
 
   final _productsController = StreamController<List<ProductModel>>.broadcast();
+  final _checkoutController = StreamController<List<CheckoutModel>>.broadcast();
 
   Stream<List<ProductModel>> get productsStream => _productsController.stream;
+
+  Stream<List<CheckoutModel>> get checkoutStream => _checkoutController.stream;
 
   // Clear Data
   void clearFormData() {
@@ -32,6 +36,7 @@ class ProductViewModel extends GetxController {
     productPrice.clear();
     productMaterial.clear();
     productStock.clear();
+    productCategory.value = "Select Category";
     storagePath.value = "Choose Image!";
   }
 
@@ -70,10 +75,24 @@ class ProductViewModel extends GetxController {
     await _productRepo.deleteProduct(id);
   }
 
-  // Checkout Product
+  // Add Checkout Product
   Future<void> checkoutProduct(
       CheckoutModel checkout, BuildContext context) async {
     await _productRepo.checkoutProduct(checkout, context);
+  }
+
+  // Fetch Product By User ID
+  fetchCheckoutProduct() async {
+    var userId = _authRepo.firebaseUser.value!.uid;
+    List<CheckoutModel> checkout =
+        await _productRepo.getCheckoutProducts(userId);
+    _checkoutController.add(checkout);
+  }
+
+  void onChanged(String? value) {
+    if (value != null) {
+      productCategory.value = value;
+    }
   }
 
   @override

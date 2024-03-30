@@ -34,6 +34,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     final productMaterial =
         TextEditingController(text: product.productMaterial);
     final productStock = TextEditingController(text: product.productStock);
+    var productCategories = product.productCategories;
     final productShipped = TextEditingController(text: product.productShipped);
 
     return Scaffold(
@@ -86,6 +87,36 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     textInputAction: TextInputAction.done,
                   ),
                   SizedBox(height: Get.height * 0.02),
+                  DropdownButtonFormField<String>(
+                    autofocus: false,
+                    value: productCategories,
+                    isExpanded: true,
+                    onChanged: productViewModel.onChanged,
+                    items: <String>[
+                      'Select Category',
+                      'Hand Tools',
+                      'Power Tools',
+                      'Measurement Tools',
+                      'Plumping Tools',
+                      'Cutting Tools',
+                      'Fastening Tools',
+                      'Gardening Tools',
+                      'Electrical Tools',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: AutoSizeText(value),
+                      );
+                    }).toList(),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(20, 15, 0, 15),
+                      hintText: "Categories",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.02),
                   EditProductFields(
                     name: "Product Shipped",
                     regExp: "[a-zA-Z ]",
@@ -130,6 +161,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           productPrice,
                           productMaterial,
                           productStock,
+                          productCategories,
                           productShipped);
                     },
                     child: const AutoSizeText(
@@ -166,6 +198,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       TextEditingController productPrice,
       TextEditingController productMaterial,
       TextEditingController productStock,
+      var productCategories,
       TextEditingController productShipped) {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_formKey.currentState!.validate()) {
@@ -177,6 +210,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         productMaterial: productMaterial.text.trim(),
         productShipped: productShipped.text.trim(),
         productStock: productStock.text.trim(),
+        productCategories: productViewModel.productCategory.value.trim(),
         productImage: productViewModel.storagePath.value == "Choose Image!"
             ? product.productImage
             : productViewModel.storagePath.value,

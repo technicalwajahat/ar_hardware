@@ -1,3 +1,4 @@
+import 'package:ar_hardware/viewModel/dashboard_viewmodel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,18 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final _productViewModel = Get.put(ProductViewModel());
+  final _dashboardViewModel = Get.put(DashboardViewModel());
+
+  final List<String> _chipLabel = [
+    'All',
+    'Hand Tools',
+    'Power Tools',
+    'Measurement Tools',
+    'Plumping Tools',
+    'Cutting Tools',
+    'Gardening Tools',
+    'Electrical Tools',
+  ];
 
   @override
   void initState() {
@@ -42,8 +55,30 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             SizedBox(
-              height: Get.height * 0.03,
+              height: Get.height * 0.01,
             ),
+            Obx(
+              () => SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Wrap(
+                  spacing: 5,
+                  children: List<Widget>.generate(
+                    8,
+                    (int index) {
+                      return ChoiceChip(
+                        label: AutoSizeText(_chipLabel[index]),
+                        selected: _dashboardViewModel.selectedChip == index,
+                        onSelected: (bool selected) {
+                          _dashboardViewModel.selectedChip =
+                              selected ? index : null;
+                        },
+                      );
+                    },
+                  ).toList(),
+                ),
+              ),
+            ),
+            SizedBox(height: Get.height * 0.02),
             StreamBuilder<List<ProductModel>>(
               stream: _productViewModel.productsStream,
               builder: (context, snapshot) {

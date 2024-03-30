@@ -73,7 +73,37 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     validator: "Product Stock cannot be empty",
                     textInputType: TextInputType.number,
                     controller: productViewModel.productStock,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  DropdownButtonFormField<String>(
+                    autofocus: false,
+                    value: productViewModel.productCategory.value,
+                    isExpanded: true,
+                    onChanged: productViewModel.onChanged,
+                    items: <String>[
+                      'Select Category',
+                      'Hand Tools',
+                      'Power Tools',
+                      'Measurement Tools',
+                      'Plumping Tools',
+                      'Cutting Tools',
+                      'Fastening Tools',
+                      'Gardening Tools',
+                      'Electrical Tools',
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: AutoSizeText(value),
+                      );
+                    }).toList(),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(20, 15, 0, 15),
+                      hintText: "Categories",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
                   SizedBox(height: Get.height * 0.02),
                   AddProductFields(
@@ -152,6 +182,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           productPrice: productViewModel.productPrice.text.trim(),
           productMaterial: productViewModel.productMaterial.text.trim(),
           productShipped: productViewModel.productShipped.text.trim(),
+          productCategories: productViewModel.productCategory.value.trim(),
           productStock: productViewModel.productStock.text.trim(),
           productImage: productViewModel.storagePath.value,
         );

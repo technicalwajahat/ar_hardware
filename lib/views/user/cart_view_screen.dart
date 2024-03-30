@@ -28,8 +28,8 @@ class _CartViewScreenState extends State<CartViewScreen> {
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 130,
-                          height: 130,
+                          width: 125,
+                          height: 125,
                           child: ClipRRect(
                             borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(10),
@@ -44,55 +44,50 @@ class _CartViewScreenState extends State<CartViewScreen> {
                           ),
                         ),
                         SizedBox(width: Get.width * 0.06),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AutoSizeText(
-                              data.productName.toString(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                data.productName.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: Get.height * 0.008),
-                            AutoSizeText(
-                              "Stock: ${data.quantity}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
+                              SizedBox(height: Get.height * 0.008),
+                              AutoSizeText(
+                                "Stock: ${data.quantity}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: Get.height * 0.003),
-                            AutoSizeText(
-                              "Material: ${data.productDescription}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                AutoSizeText(
-                                  "${data.unitPrice}\$",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
+                              Row(
+                                children: [
+                                  AutoSizeText(
+                                    "${data.unitPrice}\$",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    PersistentShoppingCart().removeFromCart(
-                                      data.productId,
-                                    );
-                                  },
-                                  icon: const Icon(Icons.delete,
-                                      color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  IconButton(
+                                    onPressed: () {
+                                      PersistentShoppingCart().removeFromCart(
+                                        data.productId,
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        const Spacer(),
                         Column(
                           children: [
                             IconButton(

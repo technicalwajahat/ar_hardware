@@ -18,58 +18,56 @@ class VendorProductCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       elevation: 3,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            width: 115,
-            height: 115,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(0),
-                  topRight: Radius.circular(0),
-                  topLeft: Radius.circular(10)),
-              child: Image.network(
-                product.productImage.toString(),
-                fit: BoxFit.cover,
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              width: 115,
+              height: 115,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                    topLeft: Radius.circular(10)),
+                child: Image.network(
+                  product.productImage.toString(),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AutoSizeText(
-                product.productName.toString(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          SizedBox(width: Get.width * 0.03),
+          Expanded(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  product.productName.toString(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-              SizedBox(height: Get.height * 0.008),
-              AutoSizeText(
-                "Price: ${product.productPrice}\$",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
+                SizedBox(height: Get.height * 0.008),
+                AutoSizeText(
+                  "Price: ${product.productPrice}\$",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              SizedBox(height: Get.height * 0.003),
-              AutoSizeText(
-                "Stock: ${product.productStock}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
+                SizedBox(height: Get.height * 0.003),
+                AutoSizeText(
+                  "Stock: ${product.productStock}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              SizedBox(height: Get.height * 0.003),
-              AutoSizeText(
-                "Material: ${product.productMaterial}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             children: [

@@ -19,8 +19,8 @@ class UserProductCard extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 150,
-            height: 150,
+            width: 140,
+            height: 140,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(10),
@@ -33,7 +33,7 @@ class UserProductCard extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: Get.width * 0.06),
+          SizedBox(width: Get.width * 0.04),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,7 +41,7 @@ class UserProductCard extends StatelessWidget {
                 product.productName.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
               AutoSizeText(
@@ -54,14 +54,6 @@ class UserProductCard extends StatelessWidget {
               SizedBox(height: Get.height * 0.003),
               AutoSizeText(
                 "Stock: ${product.productStock}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ),
-              SizedBox(height: Get.height * 0.003),
-              AutoSizeText(
-                "Material: ${product.productMaterial}",
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
@@ -106,7 +98,7 @@ class UserProductCard extends StatelessWidget {
                   productId: product.id.toString(),
                   productName: product.productName.toString(),
                   unitPrice: double.parse(product.productPrice.toString()),
-                  quantity: 2,
+                  quantity: 1,
                   productDescription: product.productMaterial,
                   productThumbnail: product.productImage,
                 ),

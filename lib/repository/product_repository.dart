@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 import '../utils/utils.dart';
 
@@ -50,6 +51,17 @@ class ProductRepository extends GetxController {
     return receiptData;
   }
 
+  // Fetch Checkout
+  Future<List<CheckoutModel>> getCheckoutProducts(String userId) async {
+    final querySnapshot = await _db
+        .collection("checkout")
+        .where("userId", isEqualTo: userId)
+        .get();
+    final checkoutData =
+        querySnapshot.docs.map((e) => CheckoutModel.fromSnapshot(e)).toList();
+    return checkoutData;
+  }
+
   // Update Product
   updateProduct(ProductModel productModel, BuildContext context) async {
     await _db
@@ -67,8 +79,10 @@ class ProductRepository extends GetxController {
     await _db.collection("products").doc(id).delete();
   }
 
+  // Add Checkout Product
   checkoutProduct(CheckoutModel checkout, BuildContext context) {
     _db.collection("checkout").add(checkout.toJson()).then((_) {
+      PersistentShoppingCart().clearCart();
       Utils.snackBar("Order Completed!.", context);
       Get.toNamed('/userDashboard');
     });

@@ -1,6 +1,7 @@
 import 'package:ar_hardware/models/checkout_model.dart';
 import 'package:ar_hardware/widgets/appBar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay/pay.dart';
@@ -85,6 +86,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 userId: authRepo.firebaseUser.value!.uid,
                                 totalAmount: arguments['totalPrice'].toString(),
                                 totalItems: arguments['quantity'].toString(),
+                                dateToday: Timestamp.now(),
                               );
                               productViewModel.checkoutProduct(
                                   checkout, context);
