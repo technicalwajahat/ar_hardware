@@ -43,9 +43,20 @@ class ProductRepository extends GetxController {
   }
 
   // Get All Products
-  Future<List<ProductModel>> getAllProducts() async {
-    final querySnapshot = await _db.collection("products").get();
-
+  Future<List<ProductModel>> getAllProducts(String category) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot;
+    if (category == 'All') {
+      querySnapshot = await _db
+          .collection("products")
+          .where("productStock", isGreaterThan: '0')
+          .get();
+    } else {
+      querySnapshot = await _db
+          .collection("products")
+          .where("productCategories", isEqualTo: category)
+          .where("productStock", isGreaterThan: '0')
+          .get();
+    }
     final receiptData =
         querySnapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
     return receiptData;
@@ -80,11 +91,28 @@ class ProductRepository extends GetxController {
   }
 
   // Add Checkout Product
-  checkoutProduct(CheckoutModel checkout, BuildContext context) {
+  checkoutProduct(
+      CheckoutModel checkout, BuildContext context, argument) async {
+    final _db = FirebaseFirestore.instance;
+
+    for (var item in argument) {
+      final docRef = _db.collection("products").doc(item['productId']);
+
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        final currentStockString = docSnapshot.data()?['productStock'];
+
+        final currentStock = int.tryParse(currentStockString) ?? 0;
+        final newStock = currentStock - item['quantity'];
+        await docRef.update({'productStock': newStock.toString()});
+      }
+    }
+
     _db.collection("checkout").add(checkout.toJson()).then((_) {
       PersistentShoppingCart().clearCart();
       Utils.snackBar("Order Completed!.", context);
-      Get.toNamed('/userDashboard');
+      Get.offAllNamed('/userDashboard');
     });
   }
 }

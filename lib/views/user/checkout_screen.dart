@@ -88,8 +88,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 totalItems: arguments['quantity'].toString(),
                                 dateToday: Timestamp.now(),
                               );
-                              productViewModel.checkoutProduct(
-                                  checkout, context);
+                              productViewModel.checkoutProduct(checkout,
+                                  context, arguments['productDetail']);
                             },
                             child: const AutoSizeText(
                               "Pay via Cash",

@@ -59,8 +59,8 @@ class ProductViewModel extends GetxController {
   }
 
   // Fetch All Product
-  fetchAllProducts() async {
-    List<ProductModel> products = await _productRepo.getAllProducts();
+  fetchAllProducts(String category) async {
+    List<ProductModel> products = await _productRepo.getAllProducts(category);
     _productsController.add(products);
   }
 
@@ -77,8 +77,8 @@ class ProductViewModel extends GetxController {
 
   // Add Checkout Product
   Future<void> checkoutProduct(
-      CheckoutModel checkout, BuildContext context) async {
-    await _productRepo.checkoutProduct(checkout, context);
+      CheckoutModel checkout, BuildContext context, argument) async {
+    await _productRepo.checkoutProduct(checkout, context, argument);
   }
 
   // Fetch Product By User ID

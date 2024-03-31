@@ -32,7 +32,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _productViewModel.fetchAllProducts();
+    _productViewModel.fetchAllProducts('All');
   }
 
   @override
@@ -63,7 +63,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 child: Wrap(
                   spacing: 5,
                   children: List<Widget>.generate(
-                    8,
+                    _chipLabel.length,
                     (int index) {
                       return ChoiceChip(
                         label: AutoSizeText(_chipLabel[index]),
@@ -71,6 +71,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         onSelected: (bool selected) {
                           _dashboardViewModel.selectedChip =
                               selected ? index : null;
+                          if (selected) {
+                            _productViewModel
+                                .fetchAllProducts(_chipLabel[index]);
+                          } else {
+                            _productViewModel.fetchAllProducts('All');
+                          }
                         },
                       );
                     },
@@ -104,10 +110,12 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   } else {
                     return const Center(
                       child: AutoSizeText(
-                        'No product found. Add some using the "+" button!',
+                        'No product found!',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 16),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                       ),
                     );
                   }

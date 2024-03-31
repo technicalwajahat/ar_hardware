@@ -6,7 +6,7 @@ class DashboardViewModel extends GetxController {
   var selectedIndex = 0.obs;
   final _authRepo = Get.put(AuthRepository());
 
-  final _selectedChip = 0.obs;
+  RxInt _selectedChip = RxInt(0);
 
   get selectedChip => _selectedChip.value;
 

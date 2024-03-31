@@ -26,7 +26,7 @@ class _UserOrdersState extends State<UserOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

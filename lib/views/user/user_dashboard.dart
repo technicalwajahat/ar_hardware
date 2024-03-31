@@ -70,17 +70,17 @@ class _UserDashboardState extends State<UserDashboard> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        tooltip: "Camera",
-        onPressed: () {
-          Get.toNamed('/takePicture');
-        },
-        child: const Icon(
-          Icons.camera,
-          color: Colors.white,
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   tooltip: "Camera",
+      //   onPressed: () {
+      //     Get.toNamed('/takePicture');
+      //   },
+      //   child: const Icon(
+      //     Icons.camera,
+      //     color: Colors.white,
+      //   ),
+      // ),
     );
   }
 }
