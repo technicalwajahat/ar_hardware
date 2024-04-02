@@ -27,6 +27,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     'Cutting Tools',
     'Gardening Tools',
     'Electrical Tools',
+    'Flooring & Paints',
   ];
 
   @override
@@ -39,7 +40,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 28),
+        padding: const EdgeInsets.only(top: 12, right: 24, left: 24, bottom: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

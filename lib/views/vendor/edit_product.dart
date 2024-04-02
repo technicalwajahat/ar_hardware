@@ -102,12 +102,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       'Fastening Tools',
                       'Gardening Tools',
                       'Electrical Tools',
+                      'Flooring & Paints',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: AutoSizeText(value),
                       );
                     }).toList(),
+                    validator: (value) {
+                      if (value == "Select Category") {
+                        return ("Please Choose a Category");
+                      }
+                      return null;
+                    },
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.fromLTRB(20, 15, 0, 15),
                       hintText: "Categories",

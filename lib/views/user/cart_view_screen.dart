@@ -162,42 +162,44 @@ class _CartViewScreenState extends State<CartViewScreen> {
                 },
               ),
               SizedBox(height: Get.height * 0.016),
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                onPressed: () {
-                  final shop = PersistentShoppingCart();
+              PersistentShoppingCart().getCartItemCount() != 0
+                  ? FilledButton(
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        final shop = PersistentShoppingCart();
 
-                  Map<String, dynamic> cartData = shop.getCartData();
-                  List<PersistentShoppingCartItem> cartItems =
-                      cartData['cartItems'];
+                        Map<String, dynamic> cartData = shop.getCartData();
+                        List<PersistentShoppingCartItem> cartItems =
+                            cartData['cartItems'];
 
-                  // Total Quantity
-                  var quantity = cartItems.length;
+                        // Total Quantity
+                        var quantity = cartItems.length;
 
-                  // Get ID & Product Quantity
-                  List<Map<String, dynamic>> productDetail =
-                      extractedData(cartItems);
+                        // Get ID & Product Quantity
+                        List<Map<String, dynamic>> productDetail =
+                            extractedData(cartItems);
 
-                  Get.toNamed('/checkout', arguments: {
-                    'totalPrice': cartData['totalPrice'],
-                    'quantity': quantity,
-                    'productDetail': productDetail
-                  });
-                },
-                child: const AutoSizeText(
-                  "Checkout",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
+                        Get.toNamed('/checkout', arguments: {
+                          'totalPrice': cartData['totalPrice'],
+                          'quantity': quantity,
+                          'productDetail': productDetail
+                        });
+                      },
+                      child: const AutoSizeText(
+                        "Checkout",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),
