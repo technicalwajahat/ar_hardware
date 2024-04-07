@@ -5,6 +5,7 @@ import 'package:ar_hardware/views/user/take_picture_screen.dart';
 import 'package:ar_hardware/views/user/user_dashboard.dart';
 import 'package:ar_hardware/views/user/user_home_screen.dart';
 import 'package:ar_hardware/views/user/user_settings_screen.dart';
+import 'package:ar_hardware/views/user/view_item_detail.dart';
 import 'package:ar_hardware/views/vendor/add_product.dart';
 import 'package:ar_hardware/views/vendor/edit_product.dart';
 import 'package:ar_hardware/views/vendor/vendor_dashboard.dart';
@@ -71,5 +72,9 @@ appRoutes() => [
       GetPage(
         name: '/checkout',
         page: () => const CheckoutScreen(),
+      ),
+      GetPage(
+        name: '/viewDetail',
+        page: () => const ViewItemDetail(),
       ),
     ];

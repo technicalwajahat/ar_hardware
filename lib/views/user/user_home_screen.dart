@@ -25,6 +25,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     'Measurement Tools',
     'Plumping Tools',
     'Cutting Tools',
+    'Fastening Tools',
     'Gardening Tools',
     'Electrical Tools',
     'Flooring & Paints',
