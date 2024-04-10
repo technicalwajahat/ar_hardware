@@ -89,6 +89,16 @@ class ProductViewModel extends GetxController {
     _checkoutController.add(checkout);
   }
 
+  // Upload Product
+  void uploadProductAPI(
+      File imageFile, BuildContext context, List<int> colorCodes) async {
+    await _productRepo
+        .sendImageToAPI(imageFile, context, colorCodes)
+        .then((value) {
+      Get.toNamed('/paintWall', arguments: [value, imageFile]);
+    });
+  }
+
   void onChanged(String? value) {
     if (value != null) {
       productCategory.value = value;

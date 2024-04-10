@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:ar_hardware/models/checkout_model.dart';
@@ -6,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 import '../utils/utils.dart';
@@ -13,6 +15,36 @@ import '../utils/utils.dart';
 class ProductRepository extends GetxController {
   static ProductRepository get instance => Get.find();
   final _db = FirebaseFirestore.instance;
+
+  Future<Map<String, dynamic>?> sendImageToAPI(
+      File imageFile, BuildContext context, List<int> colorCodes) async {
+    try {
+      List<int> imageBytes = imageFile.readAsBytesSync();
+
+      String base64image = base64Encode(imageBytes);
+      List<int> colorPicked = colorCodes;
+
+      var response =
+          await http.post(Uri.parse("http://10.0.2.2:8001/getProcessedImage"),
+              headers: {"Content-Type": "application/json"},
+              body: jsonEncode(
+                {"img_data": base64image, "color_picked": colorPicked},
+              ));
+
+      if (response.statusCode == 200) {
+        Utils.snackBar("Image Sent Successfully", context);
+        return jsonDecode(response.body);
+      } else {
+        Utils.snackBar(
+            "Failed to send image. Error: ${response.body}", context);
+        return null;
+      }
+    } catch (e) {
+      Utils.snackBar("Error sending image: $e", context);
+      print(e);
+      return null;
+    }
+  }
 
   Future<String> uploadProduct(String path, File image) async {
     final filename = image.path.split('/').last;
