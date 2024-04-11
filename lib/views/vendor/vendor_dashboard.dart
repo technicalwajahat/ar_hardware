@@ -106,10 +106,7 @@ class _VendorDashboardState extends State<VendorDashboard> {
       floatingActionButton: FloatingActionButton(
         tooltip: "Add Product",
         onPressed: () {
-          Get.toNamed('/addProduct', arguments: null)!.then((value) {
-            _productViewModel.fetchProducts();
-            _productViewModel.clearFormData();
-          });
+          Get.toNamed('/addProduct');
         },
         child: const Icon(Icons.add_circle_outlined),
       ),

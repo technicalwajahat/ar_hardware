@@ -25,6 +25,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final authRepo = Get.put(AuthRepository());
 
   @override
+  void initState() {
+    super.initState();
+    productViewModel.clearFormData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(text: "Add Product"),
@@ -80,7 +86,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     autofocus: false,
                     value: productViewModel.productCategory.value,
                     isExpanded: true,
-                    onChanged: productViewModel.onChanged,
+                    onChanged: productViewModel.onChangedCategory,
                     items: <String>[
                       'Select Category',
                       'Hand Tools',
@@ -109,6 +115,48 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       hintText: "Categories",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  Obx(
+                    () => DropdownButtonFormField<String>(
+                      autofocus: false,
+                      value: productViewModel.productColor.value,
+                      isExpanded: true,
+                      onChanged: productViewModel.colorEnabled.value
+                          ? productViewModel.onChangedColor
+                          : null,
+                      items: [
+                        const DropdownMenuItem<String>(
+                          value: "No Color",
+                          child: AutoSizeText("No Color"),
+                        ),
+                        ...productViewModel.colorMap.keys
+                            .where((color) => color != "No Color")
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: AutoSizeText(value),
+                          );
+                        }),
+                      ],
+                      validator: (value) {
+                        if (productViewModel.productCategory.value ==
+                            "Flooring & Paints") {
+                          if (value == "No Color") {
+                            return ("Please Choose a Color");
+                          }
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 15, 0, 15),
+                        hintText: "Colors",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ),
@@ -181,6 +229,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
     if (productViewModel.storagePath.value == "Choose Image!") {
       Utils.snackBar("Please choose an image", context);
     } else {
+      productViewModel.productColorCode.value =
+          productViewModel.getColorCode(productViewModel.productColor.value)!;
       FocusManager.instance.primaryFocus?.unfocus();
       if (_formKey.currentState!.validate()) {
         final productModel = ProductModel(
@@ -192,6 +242,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           productCategories: productViewModel.productCategory.value.trim(),
           productStock: productViewModel.productStock.text.trim(),
           productImage: productViewModel.storagePath.value,
+          productColor: productViewModel.productColorCode,
         );
         productViewModel.addProduct(productModel, context).then((value) {});
       }

@@ -17,12 +17,12 @@ class ProductRepository extends GetxController {
   final _db = FirebaseFirestore.instance;
 
   Future<Map<String, dynamic>?> sendImageToAPI(
-      File imageFile, BuildContext context, List<int> colorCodes) async {
+      File imageFile, BuildContext context, List<dynamic> colorCodes) async {
     try {
       List<int> imageBytes = imageFile.readAsBytesSync();
 
       String base64image = base64Encode(imageBytes);
-      List<int> colorPicked = colorCodes;
+      List<dynamic> colorPicked = colorCodes;
 
       var response =
           await http.post(Uri.parse("http://10.0.2.2:8001/getProcessedImage"),

@@ -8,6 +8,7 @@ class ProductModel {
   final String? productMaterial;
   final String? productShipped;
   final String? productCategories;
+  final List<dynamic>? productColor;
   final String? productStock;
   late final String? productImage;
 
@@ -19,6 +20,7 @@ class ProductModel {
     required this.productMaterial,
     required this.productShipped,
     required this.productCategories,
+    required this.productColor,
     required this.productStock,
     required this.productImage,
   });
@@ -34,6 +36,7 @@ class ProductModel {
       productMaterial: data['productMaterial'] ?? '',
       productShipped: data['productShipped'] ?? '',
       productCategories: data['productCategories'] ?? '',
+      productColor: data['productColor'] ?? [0, 0, 0],
       productStock: data['productStock'] ?? '',
       productImage: data['productImage'] ?? '',
     );
@@ -47,6 +50,7 @@ class ProductModel {
     data['productMaterial'] = productMaterial;
     data['productShipped'] = productShipped;
     data['productCategories'] = productCategories;
+    data['productColor'] = productColor;
     data['productStock'] = productStock;
     data['productImage'] = productImage;
     return data;

@@ -149,6 +149,27 @@ class _ViewItemDetailState extends State<ViewItemDetail> {
                   ),
                 ],
               ),
+              SizedBox(height: Get.height * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const AutoSizeText(
+                    "Product Color Code",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                  AutoSizeText(
+                    "${products[0].productColor}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
               const Spacer(),
               PersistentShoppingCart().showAndUpdateCartItemWidget(
                 inCartWidget: Container(
@@ -200,7 +221,8 @@ class _ViewItemDetailState extends State<ViewItemDetail> {
                         ),
                       ),
                       onPressed: () {
-                        Get.toNamed("/takePicture");
+                        Get.toNamed("/takePicture",
+                            arguments: [products[0].productColor]);
                       },
                       child: const AutoSizeText(
                         "Visualize Paint",

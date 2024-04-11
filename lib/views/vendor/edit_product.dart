@@ -35,6 +35,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
         TextEditingController(text: product.productMaterial);
     final productStock = TextEditingController(text: product.productStock);
     var productCategories = product.productCategories;
+    var productColor = product.productColor;
+    String? colorKey = productViewModel.findKeyFromValue(productColor);
+    productViewModel.productColor.value = colorKey.toString();
     final productShipped = TextEditingController(text: product.productShipped);
 
     return Scaffold(
@@ -91,7 +94,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     autofocus: false,
                     value: productCategories,
                     isExpanded: true,
-                    onChanged: productViewModel.onChanged,
+                    onChanged: productViewModel.onChangedCategory,
                     items: <String>[
                       'Select Category',
                       'Hand Tools',
@@ -120,6 +123,48 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       hintText: "Categories",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Get.height * 0.02),
+                  Obx(
+                    () => DropdownButtonFormField<String>(
+                      autofocus: false,
+                      value: productViewModel.productColor.value,
+                      isExpanded: true,
+                      onChanged: productViewModel.colorEnabled.value
+                          ? productViewModel.onChangedColor
+                          : null,
+                      items: [
+                        const DropdownMenuItem<String>(
+                          value: "No Color",
+                          child: AutoSizeText("No Color"),
+                        ),
+                        ...productViewModel.colorMap.keys
+                            .where((color) => color != "No Color")
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: AutoSizeText(value),
+                          );
+                        }),
+                      ],
+                      validator: (value) {
+                        if (productViewModel.productCategory.value ==
+                            "Flooring & Paints") {
+                          if (value == "No Color") {
+                            return ("Please Choose a Color");
+                          }
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 15, 0, 15),
+                        hintText: "Colors",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ),
@@ -168,7 +213,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           productPrice,
                           productMaterial,
                           productStock,
-                          productCategories,
                           productShipped);
                     },
                     child: const AutoSizeText(
@@ -205,9 +249,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       TextEditingController productPrice,
       TextEditingController productMaterial,
       TextEditingController productStock,
-      var productCategories,
       TextEditingController productShipped) {
     FocusManager.instance.primaryFocus?.unfocus();
+    productViewModel.productColorCode.value =
+        productViewModel.getColorCode(productViewModel.productColor.value)!;
     if (_formKey.currentState!.validate()) {
       final productModel = ProductModel(
         userId: userId.text,
@@ -218,6 +263,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         productShipped: productShipped.text.trim(),
         productStock: productStock.text.trim(),
         productCategories: productViewModel.productCategory.value.trim(),
+        productColor: productViewModel.productColorCode,
         productImage: productViewModel.storagePath.value == "Choose Image!"
             ? product.productImage
             : productViewModel.storagePath.value,

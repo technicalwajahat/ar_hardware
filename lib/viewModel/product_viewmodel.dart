@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:ar_hardware/models/product_model.dart';
 import 'package:ar_hardware/repository/auth_repository.dart';
 import 'package:ar_hardware/repository/product_repository.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,25 @@ class ProductViewModel extends GetxController {
   final AuthRepository _authRepo = Get.put(AuthRepository());
   var storagePath = "Choose Image!".obs;
   var productCategory = 'Select Category'.obs;
+  var productColor = 'No Color'.obs;
+  RxList<int> productColorCode = [0, 0, 0].obs;
+  Rx<bool> colorEnabled = false.obs;
+
+  Map<String, List<int>> colorMap = {
+    "No Color": [32, 32, 32],
+    "Black": [0, 0, 0],
+    "White": [255, 255, 255],
+    "Red": [255, 0, 0],
+    "Green": [0, 255, 0],
+    "Blue": [0, 0, 25],
+    "Grey": [128, 128, 128],
+    "Bitter Sweet": [255, 102, 102],
+    "Dark Orange": [255, 128, 0],
+    "Yellow": [255, 255, 0],
+    "Indigo": [76, 0, 153],
+    "Deep Magenta": [204, 0, 204],
+    "Brilliant Azure": [51, 153, 255]
+  };
 
   final productName = TextEditingController();
   final productPrice = TextEditingController();
@@ -38,6 +58,8 @@ class ProductViewModel extends GetxController {
     productStock.clear();
     productCategory.value = "Select Category";
     storagePath.value = "Choose Image!";
+    productColor.value = "No Color";
+    colorEnabled.value = false;
   }
 
   // Upload Product
@@ -68,6 +90,7 @@ class ProductViewModel extends GetxController {
   Future<void> updateProduct(
       ProductModel productModel, BuildContext context) async {
     await _productRepo.updateProduct(productModel, context);
+    clearFormData();
   }
 
   // Delete Product
@@ -91,7 +114,7 @@ class ProductViewModel extends GetxController {
 
   // Upload Product
   void uploadProductAPI(
-      File imageFile, BuildContext context, List<int> colorCodes) async {
+      File imageFile, BuildContext context, List<dynamic> colorCodes) async {
     await _productRepo
         .sendImageToAPI(imageFile, context, colorCodes)
         .then((value) {
@@ -99,10 +122,43 @@ class ProductViewModel extends GetxController {
     });
   }
 
-  void onChanged(String? value) {
+  // On Change Category
+  void onChangedCategory(String? value) {
     if (value != null) {
       productCategory.value = value;
+      if (value.endsWith("Flooring & Paints")) {
+        colorEnabled.value = true;
+      } else {
+        colorEnabled.value = false;
+        productColor.value = "No Color";
+      }
     }
+  }
+
+  // On Change Color
+  void onChangedColor(String? value) {
+    if (value != null) {
+      productColor.value = value;
+    }
+  }
+
+  // Get Color Code
+  List<int>? getColorCode(String colorKey) {
+    return colorMap[colorKey];
+  }
+
+  // Find Key From Value
+  String? findKeyFromValue(List? values) {
+    if (values == null) {
+      return "No Color";
+    }
+
+    for (var entry in colorMap.entries) {
+      if (listEquals(values, entry.value)) {
+        return entry.key;
+      }
+    }
+    return "No Color";
   }
 
   @override
