@@ -118,7 +118,7 @@ class ProductViewModel extends GetxController {
     await _productRepo
         .sendImageToAPI(imageFile, context, colorCodes)
         .then((value) {
-      Get.toNamed('/paintWall', arguments: [value, imageFile]);
+      Get.toNamed('/paintWall', arguments: value!['result']);
     });
   }
 

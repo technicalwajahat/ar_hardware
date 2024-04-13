@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ar_hardware/models/checkout_model.dart';
 import 'package:ar_hardware/models/product_model.dart';
@@ -17,23 +18,30 @@ class ProductRepository extends GetxController {
   final _db = FirebaseFirestore.instance;
 
   Future<Map<String, dynamic>?> sendImageToAPI(
-      File imageFile, BuildContext context, List<dynamic> colorCodes) async {
+      File imageFile, BuildContext context, List colorCodes) async {
     try {
       List<int> imageBytes = imageFile.readAsBytesSync();
-
       String base64image = base64Encode(imageBytes);
-      List<dynamic> colorPicked = colorCodes;
+      final client = http.Client();
 
-      var response =
-          await http.post(Uri.parse("http://10.0.2.2:8001/getProcessedImage"),
-              headers: {"Content-Type": "application/json"},
-              body: jsonEncode(
-                {"img_data": base64image, "color_picked": colorPicked},
-              ));
+      var response = await client
+          .post(
+            Uri.parse("http://10.0.2.2:8001/getProcessedImage"),
+            headers: {
+              "Content-Type": "application/json",
+              "Connection": "Keep-Alive",
+              "Keep-Alive": "timeout=5, max=1000"
+            },
+            body: jsonEncode(
+              {"img_data": base64image, "color_picked": colorCodes},
+            ),
+          )
+          .timeout((const Duration(seconds: 30)));
 
       if (response.statusCode == 200) {
         Utils.snackBar("Image Sent Successfully", context);
-        return jsonDecode(response.body);
+        Uint8List bytes = base64Decode(jsonDecode(response.body)['result']);
+        return {'result': bytes};
       } else {
         Utils.snackBar(
             "Failed to send image. Error: ${response.body}", context);
@@ -41,7 +49,6 @@ class ProductRepository extends GetxController {
       }
     } catch (e) {
       Utils.snackBar("Error sending image: $e", context);
-      print(e);
       return null;
     }
   }
