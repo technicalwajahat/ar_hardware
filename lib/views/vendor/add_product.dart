@@ -244,7 +244,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
           productImage: productViewModel.storagePath.value,
           productColor: productViewModel.productColorCode,
         );
-        productViewModel.addProduct(productModel, context).then((value) {});
+        productViewModel.addProduct(productModel, context).then((value) {
+          productViewModel.fetchProducts();
+        });
       }
     }
   }
