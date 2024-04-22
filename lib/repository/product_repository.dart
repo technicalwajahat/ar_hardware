@@ -26,11 +26,12 @@ class ProductRepository extends GetxController {
 
       var response = await client
           .post(
-            Uri.parse("http://10.0.2.2:8001/getProcessedImage"),
+            Uri.parse("http://192.168.100.7:8001/getProcessedImage"),
             headers: {
               "Content-Type": "application/json",
-              "Connection": "Keep-Alive",
-              "Keep-Alive": "timeout=5, max=1000"
+              'Accept': "*/*",
+              'connection': 'keep-alive',
+              'Accept-Encoding': 'gzip, deflate, br',
             },
             body: jsonEncode(
               {"img_data": base64image, "color_picked": colorCodes},
@@ -43,11 +44,13 @@ class ProductRepository extends GetxController {
         Uint8List bytes = base64Decode(jsonDecode(response.body)['result']);
         return {'result': bytes};
       } else {
+        print(response.body);
         Utils.snackBar(
             "Failed to send image. Error: ${response.body}", context);
         return null;
       }
     } catch (e) {
+      print(e);
       Utils.snackBar("Error sending image: $e", context);
       return null;
     }
