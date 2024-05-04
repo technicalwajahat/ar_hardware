@@ -18,12 +18,11 @@ class ProductViewModel extends GetxController {
   var storagePath = "Choose Image!".obs;
   var productCategory = 'Select Category'.obs;
   var productColor = 'No Color'.obs;
-  RxList<int> productColorCode = [0, 0, 0].obs;
+  RxList<int> productColorCode = [255, 255, 255].obs;
   Rx<bool> colorEnabled = false.obs;
 
   Map<String, List<int>> colorMap = {
     "No Color": [32, 32, 32],
-    "Black": [0, 0, 0],
     "White": [255, 255, 255],
     "Red": [255, 0, 0],
     "Green": [0, 255, 0],
