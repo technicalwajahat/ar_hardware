@@ -103,6 +103,7 @@ def save_image(img_name, img):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     cv2.imwrite(img_name, img)
 
+
 def change_color(image_name, position, new_color, pattern_image):
     img = read_image_from_base64(image_name)
     colored_image = get_colored_image(img, new_color, pattern_image)
@@ -110,5 +111,3 @@ def change_color(image_name, position, new_color, pattern_image):
     selected_wall = select_wall(outline_img, position)
     final_img = merge_images(img, colored_image, selected_wall)
     return final_img
-
-
