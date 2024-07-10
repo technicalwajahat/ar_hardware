@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:persistent_shopping_cart/persistent_shopping_cart.dart';
 
 import '../../viewModel/dashboard_viewmodel.dart';
+import '../../widgets/search_screen.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({super.key});
@@ -38,7 +39,13 @@ class _UserDashboardState extends State<UserDashboard> {
               ),
             ),
           ),
-          const SizedBox(width: 20.0)
+          IconButton(
+            onPressed: () {
+              showSearch(context: context, delegate: SearchPlot());
+            },
+            icon: const Icon(Icons.search_rounded),
+          ),
+          const SizedBox(width: 10.0)
         ],
       ),
       body: Obx(

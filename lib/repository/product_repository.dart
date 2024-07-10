@@ -104,6 +104,22 @@ class ProductRepository extends GetxController {
     return receiptData;
   }
 
+  // Search Product
+  Future<List<ProductModel>> getSearchProduct(String query) async {
+    final querySnapshot = await _db.collection("products").get();
+    final allProducts =
+        querySnapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
+
+    final filteredProducts = allProducts.where((product) {
+      final lowerCaseQuery = query.toLowerCase().trim();
+      final lowerCaseProductName = product.productName?.toLowerCase();
+      final lowerCaseProductPrice = product.productPrice?.toLowerCase();
+      return (lowerCaseProductName?.contains(lowerCaseQuery) ?? false) ||
+          (lowerCaseProductPrice?.contains(lowerCaseQuery) ?? false);
+    }).toList();
+    return filteredProducts;
+  }
+
   // Fetch Checkout
   Future<List<CheckoutModel>> getCheckoutProducts(String userId) async {
     final querySnapshot = await _db

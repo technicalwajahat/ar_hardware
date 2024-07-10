@@ -85,6 +85,12 @@ class ProductViewModel extends GetxController {
     _productsController.add(products);
   }
 
+  // Search Product
+  searchProducts({required String query}) async {
+    List<ProductModel> products = await _productRepo.getSearchProduct(query);
+    _productsController.add(products);
+  }
+
   // Update Product
   Future<void> updateProduct(
       ProductModel productModel, BuildContext context) async {
